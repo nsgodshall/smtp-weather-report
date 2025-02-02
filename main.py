@@ -11,6 +11,7 @@ import matplotlib.ticker as ticker
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+import historicalWeather
 from dotenv import dotenv_values, load_dotenv
 
 # loading variables from .env file
@@ -147,7 +148,7 @@ def plot(plotDf):
         color="tab:blue",
         marker="o")
     ax2.tick_params(axis="y", labelcolor="tab:blue")
-    ax2.set_ylim(0, 10)
+    ax2.set_ylim(0, 2)
 
     plt.tight_layout()
     plt.savefig("temp.png")
@@ -181,23 +182,25 @@ def writeEmailMessage(plotDf):
 def sendMessage(plotDf):
     message = writeEmailMessage(plotDf)
     formattedDate = getTodayString()
-    with open("temp.png", "rb") as f:
-        img_data = f.read()
     subject = f"Weather for {formattedDate}"
     body = message
     sender = SENDER_EMAIL
     recipients = [TARGET_EMAIL]
     password = SENDER_PASS
-    image = MIMEImage(img_data, name="temp.png")
+
+    hw = historicalWeather.HistoricWeatherRetriever(datetime.datetime.now())
+    hw.runJob()
+    historical_weather_report = hw.printWeatherReport()
+
 
     msg = MIMEMultipart()
-    text = MIMEText(body)
-
+    
     html_body = f"""
     <html>
     <body>
         <div>{body}</div>
         <img src="cid:image1" />
+        <div>{historical_weather_report}</div>
     </body>
     </html>
     """
