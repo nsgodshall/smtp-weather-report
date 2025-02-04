@@ -98,7 +98,7 @@ class HistoricWeatherRetriever():
         else:
             breakChar = '\n'
         print(self.averageTmax)
-        message = f"Historical weather report for {self.date.strftime("%d/%m")} {breakChar}"
+        message = f"Historical weather report for {self.date.strftime("%m/%d")} {breakChar}"
 
         message += f"===== HIGHS ====={breakChar}"
         if self.averageTmax: 

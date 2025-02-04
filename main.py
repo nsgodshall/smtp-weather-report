@@ -64,7 +64,7 @@ def processData(bsData):
 
 
 def getStartDateTime():
-    startHour = 6
+    startHour = 10
     timezone = TZ
     current_date = (
         pd.Timestamp.utcnow()
@@ -148,7 +148,7 @@ def plot(plotDf):
         color="tab:blue",
         marker="o")
     ax2.tick_params(axis="y", labelcolor="tab:blue")
-    ax2.set_ylim(0, 2)
+    ax2.set_ylim(0, 0.15)
 
     plt.tight_layout()
     plt.savefig("temp.png")
@@ -157,7 +157,7 @@ def plot(plotDf):
 
 def getTodayString():
     today = datetime.datetime.today()
-    formatted_date = today.strftime("%A, %d-%m-%Y")
+    formatted_date = today.strftime("%A, %m-%d-%Y")
     return formatted_date
 
 
@@ -172,7 +172,7 @@ def writeEmailMessage(plotDf):
         max_temp.start_times.strftime("%H")}:00."
 
     if total_rain > 0:
-        message += "<p>{total_rain} total inches of rain are forecasted to fall toady."
+        message += f"<p>{total_rain} total inches of rain are forecasted to fall toady."
     else:
         message += "<p>No rain forecasted today."
 
