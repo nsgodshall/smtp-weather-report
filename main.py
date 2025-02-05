@@ -64,7 +64,7 @@ def processData(bsData):
 
 
 def getStartDateTime():
-    startHour = 10
+    startHour = 6
     timezone = TZ
     current_date = (
         pd.Timestamp.utcnow()
