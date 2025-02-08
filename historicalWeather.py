@@ -1,11 +1,12 @@
 import requests
-import sys
-import time
 import pandas as pd
+import os
 import datetime
 from requests.adapters import HTTPAdapter, Retry
+os.load_dotenv()
 
-token = "AjGaCqeTnwXdfSpwcMnCRIYGHCDnVcRH"
+NOAA_TOKEN = os.getenv("NOAA_TOKEN")
+token = NOAA_TOKEN
 CA_FIPS = "06037"
 headers = {"token": token}
 
@@ -13,7 +14,6 @@ class HistoricWeatherRetriever():
     def __init__(self, date: datetime.datetime):
         self.date = date
         self.date_str_for_url = date.strftime('%m-%d')
-
         self.maxTmax = None
         self.minTmax = None
         self.maxTmin = None
@@ -59,7 +59,7 @@ class HistoricWeatherRetriever():
             tmax = float(df[df["datatype"] == "TMAX"]["value"].values[0])
             tmin = float(df[df["datatype"] == "TMIN"]["value"].values[0])
             prcp = float(df[df["datatype"] == "PRCP"]["value"].values[0])
-            
+
             if prcp > 0:
                 didRain = True
             else:
