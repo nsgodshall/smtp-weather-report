@@ -190,8 +190,19 @@ def sendMessage(plotDf):
     hw.runJob()
     historical_weather_report = hw.printWeatherReport()
 
+    html_body = f"""
+    <html>
+    <body>
+        <div>{body}</div>
+        <img src="cid:image1" />
+        <div>{historical_weather_report}</div>
+    </body>
+    </html>
+    """
+
     es = EmailSender(SENDER_EMAIL, SENDER_PASS, recipients)
-    es.sendMessage(subject=subject, body=)
+    es.sendMessage(subject=subject, body=html_body)
+    
 class EmailSender():
     def __init__(self, senderEmail: str, senderPass: str, recieverEmail: list[str]):
         self.senderEmail = senderEmail
