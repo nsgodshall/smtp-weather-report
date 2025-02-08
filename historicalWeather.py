@@ -59,6 +59,7 @@ class HistoricWeatherRetriever():
             tmax = float(df[df["datatype"] == "TMAX"]["value"].values[0])
             tmin = float(df[df["datatype"] == "TMIN"]["value"].values[0])
             prcp = float(df[df["datatype"] == "PRCP"]["value"].values[0])
+            
             if prcp > 0:
                 didRain = True
             else:
@@ -70,14 +71,13 @@ class HistoricWeatherRetriever():
                 self.minTmax = (tmax, year)   
 
             if tmin > self.maxTmin[0]:
-                self.maxTmin = (tmax, year)
+                self.maxTmin = (tmin, year)
             if tmin < self.minTmin[0]:
-                self.minTmin = (tmax, year)
+                self.minTmin = (tmin, year)
 
             if prcp > self.maxPrcp[0]:
                 self.maxPrcp = (prcp, year)
-            if tmin < self.minTmin[0]:
-                self.minTmin = (tmin, year)
+
 
             totalTmax += tmax
             totalTmin += tmin
