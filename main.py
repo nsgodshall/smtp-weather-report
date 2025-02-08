@@ -184,44 +184,37 @@ def sendMessage(plotDf):
     formattedDate = getTodayString()
     subject = f"Weather for {formattedDate}"
     body = message
-    sender = SENDER_EMAIL
     recipients = [TARGET_EMAIL]
-    password = SENDER_PASS
 
     hw = historicalWeather.HistoricWeatherRetriever(datetime.datetime.now())
     hw.runJob()
     historical_weather_report = hw.printWeatherReport()
 
+    es = EmailSender(SENDER_EMAIL, SENDER_PASS, recipients)
+    es.sendMessage(subject=subject, body=)
+class EmailSender():
+    def __init__(self, senderEmail: str, senderPass: str, recieverEmail: list[str]):
+        self.senderEmail = senderEmail
+        self.senderPass = senderPass
+        self.recieverEmail = recieverEmail
 
-    msg = MIMEMultipart()
-    
-    html_body = f"""
-    <html>
-    <body>
-        <div>{body}</div>
-        <img src="cid:image1" />
-        <div>{historical_weather_report}</div>
-    </body>
-    </html>
-    """
-    msg.attach(MIMEText(html_body, "html"))
-
-    # Attach the image
-    image_path = "temp.png"  # Path to the image you want to include
-    with open(image_path, "rb") as img_file:
-        img = MIMEImage(img_file.read())
-        # This is the reference in the HTML
-        img.add_header("Content-ID", "<image1>")
-        msg.attach(img)
-
-    msg["Subject"] = subject
-    msg["From"] = sender
-    msg["To"] = ", ".join(recipients)
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp_server:
-        smtp_server.login(sender, password)
-        smtp_server.sendmail(sender, recipients, msg.as_string())
-    print("Message sent!")
-
+    def sendMessage(self, subject:str, body: str, image_file_name: str = None):
+        msg = MIMEMultipart()
+        msg.attach(MIMEText(body, "html"))
+        if image_file_name:
+            # Attach the image
+            image_path = "temp.png"  # Path to the image you want to include
+            with open(image_path, "rb") as img_file:
+                img = MIMEImage(img_file.read())
+                # This is the reference in the HTML
+                img.add_header("Content-ID", "<image1>")
+                msg.attach(img)
+        msg["Subject"] = subject
+        msg["From"] = self.senderEmail
+        msg["To"] = ", ".join(self.recieverEmail)
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp_server:
+            smtp_server.login(self.senderEmail, self.recieverEmail)
+            smtp_server.sendmail(self.senderEmail, self.recieverEmail, msg.as_string())
 
 def main():
     bsData = requestData()
