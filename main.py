@@ -12,7 +12,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 import historicalWeather
-from dotenv import dotenv_values, load_dotenv
+from dotenv import load_dotenv
 
 # loading variables from .env file
 load_dotenv()
@@ -64,7 +64,7 @@ def processData(bsData):
 
 
 def getStartDateTime():
-    startHour = 6
+    startHour = 12
     timezone = TZ
     current_date = (
         pd.Timestamp.utcnow()

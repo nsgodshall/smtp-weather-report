@@ -1,9 +1,10 @@
 import requests
 import pandas as pd
+from dotenv import load_dotenv
 import os
 import datetime
 from requests.adapters import HTTPAdapter, Retry
-os.load_dotenv()
+load_dotenv()
 
 NOAA_TOKEN = os.getenv("NOAA_TOKEN")
 token = NOAA_TOKEN
